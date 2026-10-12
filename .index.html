@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d3b66">
+<title>یادآور چادرملو</title>
+<style>
+:root{--p:#0d3b66;--a:#e8772e;--bg:#f1f4f8;--c:#fff;--t:#1c2733;--m:#6b7785;--r:#d63a3a;--g:#2e9d5b;--b:#e1e6ec}
+@media(prefers-color-scheme:dark){:root{--bg:#0e141b;--c:#18222d;--t:#e7edf3;--m:#93a1b0;--b:#283442}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{margin:0;font:15px/1.6 Vazirmatn,Vazir,Tahoma,"Noto Sans Arabic",sans-serif;background:var(--bg);color:var(--t);padding-bottom:84px}
+h1,h2,h3,h4{margin:0 0 8px}
+header{background:linear-gradient(135deg,var(--p),#1a5a8f);color:#fff;padding:14px 16px 16px;border-radius:0 0 24px 24px}
+.top{display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:19px;margin:0}
+.hs{font-size:12px;opacity:.8}
+.clk{font-size:46px;font-weight:700;text-align:center;line-height:1.3;margin-top:4px}
+.clk small{font-size:20px;opacity:.7}
+#today{text-align:center;font-size:13px;opacity:.9}
+.nb{background:rgba(255,255,255,.15);border:0;color:#fff;width:42px;height:42px;border-radius:50%;font-size:20px}
+.cn{background:var(--bg);border:0;color:var(--t);width:40px;height:40px;border-radius:50%;font-size:15px}
+.card{background:var(--c);border-radius:16px;padding:14px;margin:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.hero{background:linear-gradient(135deg,var(--a),#c45a1a);color:#fff}
+.hero .sub{color:#fde5d3}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.c{text-align:center}
+.big{font-size:42px;font-weight:700;flex:1;line-height:1.2}
+.sub{color:var(--m);font-size:13px;margin-top:4px}
+.red{color:var(--r)!important}
+.mt{margin-top:10px}
+.px{padding:0 12px}
+.empty{text-align:center;color:var(--m);padding:36px 20px;line-height:2}
+.alarm.off{opacity:.5}
+.sw,.ck{position:relative;flex:none}
+.sw{width:50px;height:28px}
+.ck{width:26px;height:26px}
+.sw input,.ck input{position:absolute;opacity:0;width:0;height:0;padding:0;border:0}
+.sw span{position:absolute;inset:0;background:#b9c2cc;border-radius:28px;transition:.2s}
+.sw span:after{content:"";position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+span{background:var(--a)}
+.sw input:checked+span:after{transform:translateX(-22px)}
+.ck span{position:absolute;inset:0;border:2px solid var(--m);border-radius:50%}
+.ck input:checked+span{background:var(--g);border-color:var(--g)}
+.ck input:checked+span:after{content:"✓";color:#fff;position:absolute;inset:0;display:grid;place-items:center;font-size:14px}
+.note{border-right:5px solid #8a96a3}
+.note.p0{border-right-color:#7fbf95}
+.note.p2{border-right-color:var(--r)}
+.note.done .nt{text-decoration:line-through;opacity:.6}
+.nt{font-weight:700}
+.when{font-size:13px;margin-top:8px;color:var(--a)}
+.meta{font-size:12px;color:var(--m);margin-top:6px}
+.stats{display:flex;text-align:center}
+.stats div{flex:1;font-size:12px;color:var(--m)}
+.stats b{display:block;font-size:24px;color:var(--t)}
+.chips{display:flex;gap:8px;padding:8px 12px;overflow-x:auto}
+.chips.in{padding:8px 0}
+.chip{border:1px solid var(--b);background:var(--c);color:var(--t);border-radius:20px;padding:6px 14px;font:inherit;font-size:13px;white-space:nowrap}
+.chip.on{background:var(--p);border-color:var(--p);color:#fff}
+.sec{margin:16px 16px 0;color:var(--m);font-size:14px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-top:8px}
+.cal .h{font-size:12px;color:var(--m)}
+.cal .d{padding:6px 0 10px;border-radius:10px;position:relative;font-size:16px;line-height:1.3}
+.cal .d small{display:block;font-size:10px;color:var(--m)}
+.cal .hol{color:var(--r)}
+.cal .today{background:var(--p);color:#fff}
+.cal .today small{color:#cfe0f0}
+.cal .sel{outline:2px solid var(--a)}
+.cal .dot:after{content:"";position:absolute;bottom:3px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--a)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--c);border-top:1px solid var(--b);padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav button{flex:1;background:none;border:0;padding:6px 0 8px;color:var(--m);font:inherit;font-size:12px}
+nav button b{display:block;font-size:21px;font-weight:400}
+nav button.on{color:var(--a)}
+#fab{position:fixed;left:18px;bottom:80px;width:58px;height:58px;border-radius:50%;border:0;background:var(--a);color:#fff;font-size:32px;line-height:1;box-shadow:0 6px 16px rgba(0,0,0,.25);z-index:11}
+footer{text-align:center;font-size:12px;color:var(--m);padding:18px 10px}
+#sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;z-index:20}
+#sheet.show{display:flex}
+#sheetBody{background:var(--c);width:100%;max-height:92vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom))}
+.f{margin:14px 0}
+.l{display:block;font-size:13px;color:var(--m);margin-bottom:6px}
+input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--b);border-radius:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--t)}
+.tbig{font-size:34px;text-align:center;font-weight:700}
+.seg{display:flex;background:var(--bg);border-radius:12px;padding:3px}
+.seg button{flex:1;border:0;background:none;padding:9px 2px;border-radius:10px;font:inherit;font-size:14px;color:var(--t)}
+.seg button.on{background:var(--c);color:var(--a);font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.days{display:flex;gap:5px}
+.days button{flex:1;height:40px;border-radius:50%;border:1px solid var(--b);background:var(--c);color:var(--t);font:inherit}
+.days button.on{background:var(--a);border-color:var(--a);color:#fff}
+.dp{display:flex;gap:6px}
+.dp select:nth-child(2){flex:1.7}
+.tg{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--b)}
+.btn{border:0;border-radius:12px;padding:12px 14px;font:inherit;font-size:15px;background:var(--p);color:#fff}
+.btn.acc{background:var(--a)}
+.btn.red{background:var(--r)}
+.btn.ghost{background:var(--bg);color:var(--t);border:1px solid var(--b)}
+.btn.w{width:100%}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btns .btn{flex:1}
+.abtn{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.abtn button{border:1px solid var(--b);background:var(--bg);color:var(--t);border-radius:12px;padding:10px 2px;font:inherit;font-size:13px}
+.recbar{display:flex;align-items:center;gap:10px;margin-top:8px;padding:6px 12px;border-radius:12px;background:#fde8e8;color:#9b1c1c}
+.atts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.att{position:relative}
+.att img,.att video{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#000;display:block}
+.att.audio{grid-column:1/-1;display:flex;align-items:center;gap:6px}
+.att audio{flex:1;min-width:0}
+.x{position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:17px;line-height:1;padding:0}
+.att.audio .x{position:static;flex:none}
+.geq{background:var(--bg);border-radius:12px;padding:10px;margin-top:10px;font-size:13px;line-height:1.9}
+.banner{margin:10px 12px;padding:10px 14px;border-radius:12px;background:#fff3cd;color:#6b4e00;font-size:13px}
+.ov{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;text-align:center;padding:24px;overflow-y:auto}
+.ov.show{display:flex}
+.ov>:first-child{margin-top:auto}
+.ov>:last-child{margin-bottom:auto}
+#ring{z-index:50;background:radial-gradient(circle at 50% 25%,#1f5f99,#081d33);color:#fff}
+#ringBody{width:100%;max-width:420px}
+#ring .sub{color:#cfe0f0}
+.rt{font-size:76px;font-weight:700;line-height:1.2;animation:pu 1.2s infinite}
+@keyframes pu{50%{transform:scale(1.06)}}
+.rtitle{font-size:22px;font-weight:700;margin:14px 0 6px}
+.rtext{white-space:pre-wrap;opacity:.9;margin:6px 0}
+.puz{background:rgba(255,255,255,.1);border-radius:18px;padding:16px;margin-top:16px}
+.pe{font-size:40px;font-weight:700;margin:8px 0}
+#pans{text-align:center;font-size:28px;margin-bottom:10px;background:#fff;color:#000}
+.shake{animation:sh .4s}
+@keyframes sh{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+#ring .btn.ghost,#night .btn.ghost{background:rgba(255,255,255,.1);color:inherit;border-color:rgba(255,255,255,.25)}
+#night{z-index:40;background:#000;color:#e8772e}
+.nc{font-size:24vw;font-weight:700;opacity:.85;line-height:1.2}
+.nd,.nn{color:#b08a68;margin:8px 0}
+#viewer{z-index:70;background:rgba(0,0,0,.92);padding:10px}
+#viewer img{max-width:100%;max-height:92vh}
+#toast{position:fixed;bottom:150px;left:50%;transform:translate(-50%,20px);background:rgba(25,32,40,.95);color:#fff;padding:10px 18px;border-radius:22px;font-size:14px;opacity:0;transition:.3s;z-index:80;pointer-events:none;width:max-content;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.about{text-align:center;line-height:1.9}
+.about svg{display:block;margin:0 auto 6px}
+.by{margin-top:10px;padding-top:10px;border-top:1px dashed var(--b)}
+</style>
+</head>
+<body>
+<noscript><div class="banner">این برنامه به جاوااسکریپت نیاز دارد. فایل را با مرورگر Chrome باز کنید.</div></noscript>
+<header>
+<div class="top"><div><h1>⛰ یادآور چادرملو</h1><div class="hs">مجتمع معدنی و صنعتی چادرملو</div></div><button class="nb" data-act="night" aria-label="حالت شب">🌙</button></div>
+<div class="clk" id="clk" dir="ltr"></div>
+<div id="today"></div>
+</header>
+<div id="banners"></div>
+<main id="view"></main>
+<footer>مجتمع معدنی و صنعتی چادرملو · طراحی و توسعه: یاسین مظفری</footer>
+<button id="fab" data-act="fab" aria-label="افزودن">+</button>
+<nav>
+<button data-act="tab" data-tab="alarms"><b>⏰</b>هشدارها</button>
+<button data-act="tab" data-tab="notes"><b>📝</b>یادداشت‌ها</button>
+<button data-act="tab" data-tab="cal"><b>📅</b>تقویم</button>
+<button data-act="tab" data-tab="more"><b>⚙️</b>بیشتر</button>
+</nav>
+<div id="sheet"><div id="sheetBody"></div></div>
+<div id="night" class="ov"><div class="nc" id="nc" dir="ltr"></div><div class="nd" id="nd"></div><div class="nn" id="nn"></div><button class="btn ghost mt" data-act="nightOff">خروج از حالت شب</button></div>
+<div id="ring" class="ov"><div id="ringBody"></div></div>
+<div id="viewer" class="ov" data-act="viewClose"><img id="vimg" alt=""></div>
+<div id="toast"></div>
+<input type="file" id="picker" hidden>
+<input type="file" id="toneIn" accept="audio/*" hidden>
+<input type="file" id="restoreIn" accept=".json,application/json" hidden>
+<script>
+/* =====================================================================
+   یادآور چادرملو — بخش ۲ از ۴: پایه‌های برنامه
+   ابزارها، تقویم شمسی و تعطیلات، ذخیره‌سازی در حافظه گوشی و پشتیبان‌گیری،
+   موتور زمان‌بندی زنگ‌ها، موتور صدا و معمای ریاضی
+   مجتمع معدنی و صنعتی چادرملو · طراحی و توسعه: یاسین مظفری
+   ===================================================================== */
+'use strict';
+
+// ================= ابزارهای عمومی =================
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const MIN = 60000, HOUR = 3600000, DAY = 86400000;
+const two = n => String(n).padStart(2, '0');
+const fa = s => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const en = s => String(s ?? '').replace(/[۰-۹]/g, d => d.charCodeAt(0) - 1776).replace(/[٠-٩]/g, d => d.charCodeAt(0) - 1632);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' })[c]);
+
+function toast(msg, ms = 2800) {
+  const t = $('#toast');
+  t.textContent = fa(msg);
+  t.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove('show'), ms);
+}
+
+// اگر در چسباندن بخش‌ها اشتباهی رخ دهد، پیام خطا روی صفحه نمایش داده می‌شود
+addEventListener('error', e => toast('خطا: ' + (e.message || 'نامشخص'), 7000));
+
+// ================= اتصال دکمه‌ها =================
+const ACT = {}, CHG = {};
+document.addEventListener('click', e => {
+  if (e.target.closest('.sw, .ck')) return;
+  const el = e.target.closest('[data-act]');
+  if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e);
+});
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-chg]');
+  if (el && CHG[el.dataset.chg]) CHG[el.dataset.chg](el, e);
+});
+
+// ================= تقویم شمسی =================
+const J = {
+  MONTHS: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
+  GMONTHS: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'],
+  WEEK: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'],
+  WEEK1: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+
+  fromG(gy, gm, gd) {
+    const sum = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    const gy2 = gm > 2 ? gy + 1 : gy;
+    let days = 355666 + 365 * gy + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) +
+      Math.floor((gy2 + 399) / 400) + gd + sum[gm - 1];
+    let jy = -1595 + 33 * Math.floor(days / 12053); days %= 12053;
+    jy += 4 * Math.floor(days / 1461); days %= 1461;
+    if (days > 365) { jy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
+    return days < 186 ? [jy, 1 + Math.floor(days / 31), 1 + days % 31]
+      : [jy, 7 + Math.floor((days - 186) / 30), 1 + (days - 186) % 30];
+  },
+
+  toG(jy, jm, jd) {
+    const y = jy + 1595;
+    let days = -355668 + 365 * y + Math.floor(y / 33) * 8 + Math.floor((y % 33 + 3) / 4) + jd +
+      (jm < 7 ? (jm - 1) * 31 : (jm - 7) * 30 + 186);
+    let gy = 400 * Math.floor(days / 146097); days %= 146097;
+    if (days > 36524) { days--; gy += 100 * Math.floor(days / 36524); days %= 36524; if (days >= 365) days++; }
+    gy += 4 * Math.floor(days / 1461); days %= 1461;
+    if (days > 365) { gy += Math.floor((days - 1) / 365); days = (days - 1) % 365; }
+    const leap = (gy % 4 === 0 && gy % 100 !== 0) || gy % 400 === 0;
+    const ml = [0, 31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let gd = days + 1, gm = 0;
+    while (gm < 13 && gd > ml[gm]) gd -= ml[gm++];
+    return [gy, gm, gd];
+  },
+
+  of(t) { const d = new Date(t); return J.fromG(d.getFullYear(), d.getMonth() + 1, d.getDate()); },
+  isLeap(jy) { const g = J.toG(jy, 12, 30); return J.fromG(g[0], g[1], g[2])[1] === 12; },
+  monthLen(jy, jm) { return jm <= 6 ? 31 : jm <= 11 ? 30 : J.isLeap(jy) ? 30 : 29; },
+  toMs(jy, jm, jd, h = 0, m = 0) { const g = J.toG(jy, jm, jd); return new Date(g[0], g[1] - 1, g[2], h, m, 0, 0).getTime(); },
+  weekIdx(t) { return (new Date(t).getDay() + 1) % 7; }
+};
+
+// تعطیلات رسمی ثابت خورشیدی؛ تعطیلات قمری و خاص مجتمع را در تب «تقویم» علامت بزنید
+const HOLIDAYS = {
+  '1-1': 'عید نوروز', '1-2': 'عید نوروز', '1-3': 'عید نوروز', '1-4': 'عید نوروز',
+  '1-12': 'روز جمهوری اسلامی', '1-13': 'روز طبیعت', '3-14': 'رحلت امام خمینی',
+  '3-15': 'قیام ۱۵ خرداد', '11-22': 'پیروزی انقلاب اسلامی', '12-29': 'ملی شدن صنعت نفت'
+};
+const holiday = (jy, jm, jd) => (D.settings.hol || {})[jy + '-' + jm + '-' + jd] || HOLIDAYS[jm + '-' + jd] || '';
+
+// ================= قالب‌بندی تاریخ و زمان =================
+const dayKey = t => { const [y, m, d] = J.of(t); return y * 10000 + m * 100 + d; };
+const hm = t => { const d = new Date(t); return fa(two(d.getHours()) + ':' + two(d.getMinutes())); };
+const hmOf = (h, m) => fa(two(h) + ':' + two(m));
+
+function jDate(t, week = false) {
+  const [y, m, d] = J.of(t);
+  return fa((week ? J.WEEK[J.weekIdx(t)] + ' ' : '') + d + ' ' + J.MONTHS[m - 1] + ' ' + y);
+}
+function gDate(t) {
+  const d = new Date(t);
+  return fa(d.getDate() + ' ' + J.GMONTHS[d.getMonth()] + ' ' + d.getFullYear());
+}
+const stamp = t => jDate(t, true) + '، ساعت ' + hm(t) + ' (' + gDate(t) + ')';
+
+function span(ms, full = true) {
+  let m = Math.max(1, Math.round(ms / MIN));
+  const d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60);
+  m %= 60;
+  return fa([d && d + ' روز', h && h + ' ساعت', (full || !d) && m && m + ' دقیقه'].filter(Boolean).join(' و '));
+}
+const rel = t => (t > Date.now() ? span(t - Date.now(), false) + ' دیگر' : span(Date.now() - t, false) + ' پیش');
+
+function daysText(mask) {
+  return { 0: 'یک‌بار', 127: 'هر روز', 31: 'شنبه تا چهارشنبه', 63: 'شنبه تا پنجشنبه', 96: 'پنجشنبه و جمعه' }[mask] ||
+    J.WEEK.filter((_, i) => mask & (1 << i)).join('، ');
+}
+const sizeText = b => fa(b >= 1048576 ? (b / 1048576).toFixed(1) + ' مگابایت' : Math.max(1, Math.round(b / 1024)) + ' کیلوبایت');
+
+// ================= ذخیره‌سازی در حافظه گوشی =================
+const DB = {
+  db: null,
+  open() {
+    return new Promise((ok, fail) => {
+      const r = indexedDB.open('yadavar', 1);
+      r.onupgradeneeded = () => {
+        const db = r.result;
+        if (!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
+        if (!db.objectStoreNames.contains('files')) db.createObjectStore('files');
+      };
+      r.onsuccess = () => { DB.db = r.result; ok(); };
+      r.onerror = () => fail(r.error);
+    });
+  },
+  run(store, mode, fn) {
+    return new Promise((ok, fail) => {
+      const tx = DB.db.transaction(store, mode);
+      const q = fn(tx.objectStore(store));
+      tx.oncomplete = () => ok(q.result);
+      tx.onerror = tx.onabort = () => fail(tx.error);
+    });
+  },
+  get: (s, k) => DB.run(s, 'readonly', o => o.get(k)),
+  put: (s, k, v) => DB.run(s, 'readwrite', o => o.put(v, k)),
+  del: (s, k) => DB.run(s, 'readwrite', o => o.delete(k)),
+  keys: s => DB.run(s, 'readonly', o => o.getAllKeys())
+};
+
+const SETTINGS = { digest: true, dH: 8, dM: 0, lastDigest: 0, hol: {}, guard: false, pzNote: 0 };
+let D = normalize(null);
+let STORE_OK = true;
+
+function normalize(d) {
+  d = d || {};
+  return {
+    next: d.next || 1,
+    alarms: Array.isArray(d.alarms) ? d.alarms : [],
+    notes: Array.isArray(d.notes) ? d.notes : [],
+    settings: { ...SETTINGS, hol: {}, ...(d.settings || {}) }
+  };
+}
+
+async function load() {
+  try { await DB.open(); D = normalize(await DB.get('kv', 'data')); }
+  catch (e) { STORE_OK = false; D = normalize(null); }
+}
+
+const chan = 'BroadcastChannel' in window ? new BroadcastChannel('yadavar') : null;
+async function save() {
+  if (STORE_OK) {
+    try { await DB.put('kv', 'data', D); }
+    catch (e) { toast('ذخیره نشد؛ حافظه گوشی پر است یا مرورگر اجازه نمی‌دهد'); }
+  }
+  if (chan) chan.postMessage('changed');
+}
+if (chan) chan.onmessage = async e => {
+  if (e.data !== 'changed' || !STORE_OK) return;
+  D = normalize(await DB.get('kv', 'data'));
+  render();
+};
+const newId = () => D.next++;
+
+const MEMFILES = new Map();
+const URLS = new Map();
+
+async function putFile(blob) {
+  const key = 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7).padEnd(5, '0');
+  if (STORE_OK) await DB.put('files', key, blob); else MEMFILES.set(key, blob);
+  return key;
+}
+const getFile = key => (STORE_OK ? DB.get('files', key) : Promise.resolve(MEMFILES.get(key)));
+
+async function fileURL(key) {
+  if (!URLS.has(key)) {
+    const b = await getFile(key).catch(() => null);
+    if (!b) return '';
+    if (!URLS.has(key)) URLS.set(key, URL.createObjectURL(b));
+  }
+  return URLS.get(key);
+}
+async function delFile(key) {
+  if (URLS.has(key)) { URL.revokeObjectURL(URLS.get(key)); URLS.delete(key); }
+  if (STORE_OK) await DB.del('files', key).catch(() => {}); else MEMFILES.delete(key);
+}
+function usedKeys() {
+  const s = new Set();
+  D.notes.forEach(n => (n.atts || []).forEach(x => s.add(x.key)));
+  D.alarms.forEach(a => { if (a.tone && a.tone.startsWith('f:')) s.add(a.tone.slice(2)); });
+  return s;
+}
+async function cleanFiles() {
+  if (!STORE_OK) return;
+  const used = usedKeys();
+  for (const k of await DB.keys('files'))
+    if (!used.has(k) && Date.now() - (parseInt(k.slice(1, -5), 36) || 0) > HOUR) await delFile(k);
+}
+
+// ================= پشتیبان‌گیری و بازیابی =================
+function download(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+}
+const toDataURL = b => new Promise((ok, fail) => {
+  const r = new FileReader();
+  r.onload = () => ok(r.result);
+  r.onerror = () => fail(r.error);
+  r.readAsDataURL(b);
+});
+
+async function backup() {
+  const files = {};
+  for (const k of usedKeys()) {
+    const b = await getFile(k).catch(() => null);
+    if (b) files[k] = await toDataURL(b);
+  }
+  const [y, m, d] = J.of(Date.now());
+  const json = JSON.stringify({ app: 'yadavar-chadormalu', v: 1, at: Date.now(), data: D, files });
+  download(new Blob([json], { type: 'application/json' }), `yadavar-backup-${y}-${two(m)}-${two(d)}.json`);
+  return Object.keys(files).length;
+}
+
+async function restore(file) {
+  const o = JSON.parse(await file.text());
+  if (!o || o.app !== 'yadavar-chadormalu' || !o.data) throw new Error('این فایل پشتیبان یادآور چادرملو نیست');
+  for (const [k, url] of Object.entries(o.files || {})) {
+    const b = await (await fetch(url)).blob();
+    if (STORE_OK) await DB.put('files', k, b); else MEMFILES.set(k, b);
+    if (URLS.has(k)) { URL.revokeObjectURL(URLS.get(k)); URLS.delete(k); }
+  }
+  const now = Date.now();
+  D = normalize(o.data);
+  D.alarms.forEach(a => { a.sn = 0; a.nx = a.on ? nextTime(a, now) : 0; });
+  D.notes.forEach(n => { n.sn = 0; if (n.at && n.at <= now) n.fired = true; });
+  await save();
+  cleanFiles();
+}
+
+// ================= موتور زمان‌بندی =================
+const GRACE = 15 * MIN;
+
+function nextTime(a, from = Date.now()) {
+  const d = new Date(from);
+  d.setHours(a.h, a.m, 0, 0);
+  if (d.getTime() <= from) d.setDate(d.getDate() + 1);
+  for (let i = 0; i < 400; i++) {
+    const t = d.getTime();
+    const dayOk = !a.days || (a.days & (1 << J.weekIdx(t)));
+    const holOk = !a.days || !a.skipHol || !holiday(...J.of(t));
+    if (dayOk && holOk) return t;
+    d.setDate(d.getDate() + 1);
+    d.setHours(a.h, a.m, 0, 0);
+  }
+  return d.getTime();
+}
+
+const findItem = (kind, id) => (kind === 'alarm' ? D.alarms : D.notes).find(x => x.id === id);
+
+function upcoming() {
+  const list = [];
+  for (const a of D.alarms) {
+    if (a.sn) list.push({ t: a.sn, a, snooze: true });
+    if (a.on) list.push({ t: a.nx || nextTime(a), a });
+  }
+  return list.sort((x, y) => x.t - y.t);
+}
+
+const Q = [];
+let ringing = null;
+
+function queue(kind, id) {
+  const same = x => x && x.kind === kind && x.id === id;
+  if (same(ringing) || Q.some(same)) return;
+  Q.push({ kind, id });
+  if (!ringing) nextRing();
+}
+
+function nextRing() {
+  ringing = null;
+  while (Q.length) {
+    const x = Q.shift(), item = findItem(x.kind, x.id);
+    if (item) { ringing = x; showRing(x.kind, item); return; }
+  }
+}
+
+function missed(kind, item, at) {
+  const name = kind === 'alarm' ? item.label || 'هشدار ساعت ' + hmOf(item.h, item.m)
+    : item.title || (item.text || '').slice(0, 40) || 'یادداشت';
+  const what = kind === 'alarm' ? 'هشدار ازدست‌رفته' : 'یادآوری ازدست‌رفته';
+  notify(kind, item.id, '⚠️ ' + what, name + ' — ' + jDate(at, true) + '، ساعت ' + hm(at), { silent: true });
+  toast(what + ': ' + name);
+}
+
+let ticking = false;
+async function tick() {
+  if (ticking) return;
+  ticking = true;
+  try {
+    const now = Date.now();
+    let changed = false;
+
+    for (const a of D.alarms) {
+      if (a.on && !a.nx) { a.nx = nextTime(a, now); changed = true; }
+      let at = 0;
+      if (a.sn && a.sn <= now) { at = a.sn; a.sn = 0; }
+      else if (a.on && a.nx <= now) {
+        at = a.nx;
+        if (a.days) a.nx = nextTime(a, now); else { a.on = false; a.nx = 0; }
+      }
+      if (!at) continue;
+      changed = true;
+      if (now - at > GRACE) missed('alarm', a, at); else queue('alarm', a.id);
+    }
+
+    for (const n of D.notes) {
+      if (n.done) continue;
+      let at = 0;
+      if (n.sn && n.sn <= now) { at = n.sn; n.sn = 0; }
+      else if (n.at && !n.fired && n.at <= now) { at = n.at; n.fired = true; }
+      if (!at) continue;
+      changed = true;
+      if (now - at > GRACE) missed('note', n, at);
+      else if (n.ring) queue('note', n.id);
+      else remind(n);
+    }
+
+    const s = D.settings, dt = new Date(now);
+    dt.setHours(s.dH, s.dM, 0, 0);
+    if (s.digest && s.lastDigest !== dayKey(now) && now >= dt.getTime() && now - dt.getTime() < 6 * HOUR) {
+      s.lastDigest = dayKey(now);
+      changed = true;
+      digest();
+    }
+
+    if (changed) { await save(); render(); }
+  } finally {
+    ticking = false;
+  }
+}
+
+// ================= موتور صدا =================
+const TONES = [['mine', '🏭 سوت معدن'], ['beep', '⏰ بوق دیجیتال'], ['bell', '🔔 ناقوس'], ['soft', '🎵 ملایم']];
+const GEN = {
+  keep: [10, 8000, () => t => 0.004 * Math.sin(2 * Math.PI * 25 * t)],
+  mine: [3, 22050, () => {
+    let ph = 0;
+    return t => {
+      const p = t % 3, f = p < 1.5 ? 450 + 400 * p : 1050 - 400 * (p - 1.5);
+      ph += 2 * Math.PI * f / 22050;
+      return 0.55 * Math.sin(ph) + 0.2 * Math.sin(2 * ph) + 0.1 * Math.sin(3 * ph);
+    };
+  }],
+  beep: [1.6, 22050, () => t => {
+    const k = Math.floor(t / 0.2), p = t - k * 0.2;
+    if (k > 3 || p > 0.1) return 0;
+    const x = 2 * Math.PI * 1000 * t;
+    return Math.min(1, p / 0.005, (0.1 - p) / 0.005) * (0.6 * Math.sin(x) + 0.2 * Math.sin(3 * x));
+  }],
+  bell: [1.5, 22050, () => t => {
+    const x = 2 * Math.PI * 660 * t;
+    return Math.min(1, t / 0.004) * Math.exp(-t * 3.5) *
+      (0.5 * Math.sin(x) + 0.25 * Math.sin(2 * x) + 0.15 * Math.sin(2.76 * x) + 0.08 * Math.sin(5.4 * x));
+  }],
+  soft: [2.4, 22050, () => t => {
+    let s = 0;
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+      const u = t - i * 0.35;
+      if (u > 0) s += Math.min(1, u / 0.01) * Math.exp(-u * 4) * Math.sin(2 * Math.PI * f * u);
+    });
+    return 0.45 * s;
+  }]
+};
+
+function wav(sec, rate, make) {
+  const n = Math.floor(sec * rate), v = new DataView(new ArrayBuffer(44 + n * 2)), fn = make();
+  const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVEfmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  w(36, 'data'); v.setUint32(40, n * 2, true);
+  for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, fn(i / rate))) * 32767, true);
+  return URL.createObjectURL(new Blob([v.buffer], { type: 'audio/wav' }));
+}
+
+const Sound = {
+  el: null, pv: null, urls: {}, guardOn: false, playing: false, rampT: 0, vibT: 0, pvT: 0,
+
+  url(name) { return this.urls[name] || (this.urls[name] = wav(...GEN[GEN[name] ? name : 'mine'])); },
+
+  async src(tone) {
+    if (tone && tone.startsWith('f:')) { const u = await fileURL(tone.slice(2)); if (u) return u; }
+    return this.url(GEN[tone] && tone !== 'keep' ? tone : 'mine');
+  },
+
+  audio() {
+    if (this.el) return this.el;
+    const a = this.el = new Audio();
+    a.loop = true;
+    let tries = 0;
+    a.addEventListener('playing', () => { tries = 0; });
+    a.addEventListener('pause', () => {
+      if (this.playing && tries++ < 10) setTimeout(() => { if (this.playing && a.paused) a.play().catch(() => {}); }, 2000);
+    });
+    if ('mediaSession' in navigator) {
+      const keep = () => { if (this.playing || this.guardOn) a.play().catch(() => {}); else a.pause(); };
+      for (const act of ['play', 'pause', 'stop']) {
+        try { navigator.mediaSession.setActionHandler(act, keep); } catch (_) {}
+      }
+    }
+    return a;
+  },
+
+  meta(title) {
+    if (!window.MediaMetadata) return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title, artist: 'یادآور چادرملو', album: 'مجتمع معدنی و صنعتی چادرملو',
+        artwork: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }]
+      });
+    } catch (_) {}
+  },
+
+  async guard(on) {
+    this.guardOn = on;
+    if (this.playing) return true;
+    const a = this.audio();
+    if (!on) { a.pause(); return true; }
+    a.src = this.url('keep'); a.loop = true; a.volume = 1;
+    this.meta('🌙 حالت شب فعال است');
+    try { await a.play(); return true; } catch (_) { return false; }
+  },
+
+  async ring(tone, gradual) {
+    const a = this.audio();
+    this.playing = true;
+    clearInterval(this.rampT);
+    a.src = await this.src(tone); a.loop = true;
+    a.volume = gradual ? 0.15 : 1;
+    if (gradual) {
+      const t0 = Date.now();
+      this.rampT = setInterval(() => { a.volume = Math.min(1, 0.15 + (Date.now() - t0) / 40000); }, 1000);
+    }
+    this.meta('⏰ زنگ هشدار — برای خاموش کردن، برنامه را باز کنید');
+    try { await a.play(); return true; } catch (_) { return false; }
+  },
+
+  stop() {
+    this.playing = false;
+    clearInterval(this.rampT);
+    this.vibrate(false);
+    if (this.guardOn) this.guard(true); else this.audio().pause();
+  },
+
+  vibrate(on) {
+    clearInterval(this.vibT);
+    if (!navigator.vibrate) return;
+    navigator.vibrate(0);
+    if (!on) return;
+    const v = () => navigator.vibrate([900, 500, 900]);
+    v();
+    this.vibT = setInterval(v, 2800);
+  },
+
+  async preview(tone) {
+    const p = this.pv || (this.pv = new Audio());
+    clearTimeout(this.pvT);
+    if (!p.paused && p.dataset.tone === tone) { p.pause(); return; }
+    p.src = await this.src(tone); p.dataset.tone = tone; p.loop = true; p.volume = 1;
+    p.play().catch(() => toast('پخش صدا ممکن نشد'));
+    this.pvT = setTimeout(() => p.pause(), 5000);
+  },
+  stopPreview() { clearTimeout(this.pvT); if (this.pv) this.pv.pause(); },
+
+  chime() {
+    if (this.playing) return;
+    const p = this.pv || (this.pv = new Audio());
+    p.src = this.url('soft'); p.dataset.tone = ''; p.loop = false;
+    p.play().catch(() => {});
+  }
+};
+
+// ================= روشن نگه داشتن صفحه =================
+const Wake = {
+  why: new Set(), lock: null, busy: false,
+  set(reason, on) { if (on) this.why.add(reason); else this.why.delete(reason); this.sync(); },
+  async sync() {
+    if (!this.why.size) { if (this.lock) { this.lock.release().catch(() => {}); this.lock = null; } return; }
+    if (this.lock || this.busy || !('wakeLock' in navigator) || document.visibilityState !== 'visible') return;
+    this.busy = true;
+    try {
+      const l = await navigator.wakeLock.request('screen');
+      if (!this.why.size) l.release().catch(() => {});
+      else { this.lock = l; l.addEventListener('release', () => { if (this.lock === l) this.lock = null; }); }
+    } catch (_) {}
+    this.busy = false;
+  }
+};
+document.addEventListener('visibilitychange', () => Wake.sync());
+
+// ================= معمای ریاضی =================
+const Puzzle = {
+  LEVELS: ['آسان', 'متوسط', 'سخت'],
+  make(level) {
+    const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+    if (level <= 0) { const a = r(2, 20), b = r(2, 20); return { q: a + ' + ' + b, a: a + b }; }
+    if (level === 1) {
+      const k = r(0, 2);
+      if (k === 0) { const a = r(12, 60), b = r(12, 40); return { q: a + ' + ' + b, a: a + b }; }
+      if (k === 1) { const a = r(30, 99), b = r(5, a - 5); return { q: a + ' − ' + b, a: a - b }; }
+      const a = r(3, 12), b = r(3, 9);
+      return { q: a + ' × ' + b, a: a * b };
+    }
+    const a = r(6, 15), b = r(6, 12);
+    if (Math.random() < 0.5) { const c = r(10, 59); return { q: a + ' × ' + b + ' + ' + c, a: a * b + c }; }
+    const c = r(5, Math.min(59, a * b - 5));
+    return { q: a + ' × ' + b + ' − ' + c, a: a * b - c };
+  },
+  check(p, input) { return parseInt(en(input).replace(/[^\d]/g, ''), 10) === p.a; }
+};
+</script>
+<script>
+/* =====================================================================
+   یادآور چادرملو — بخش ۳ از ۴: صفحه‌های برنامه
+   ===================================================================== */
+'use strict';
+
+const UI = { tab: 'alarms', filter: 'undone', q: '', cy: 0, cm: 0, sel: 0 };
+let E = null;
+let N = null;
+
+// ================= دکمه «برگشت» گوشی =================
+const Back = {
+  stack: [], skip: 0,
+  push(name, fn) { this.stack.push({ name, fn }); history.pushState({ b: this.stack.length }, ''); },
+  pop(name) {
+    const i = this.stack.map(x => x.name).lastIndexOf(name);
+    if (i < 0) return;
+    this.stack.splice(i, 1);
+    this.skip++;
+    history.back();
+  }
+};
+addEventListener('popstate', () => {
+  if (Back.skip) { Back.skip--; return; }
+  const top = Back.stack.pop();
+  if (top) top.fn();
+});
+
+// ================= پنجره پایین‌صفحه =================
+let sheetClose = null;
+function openSheet(html, onClose) {
+  const open = $('#sheet').classList.contains('show');
+  if (open && sheetClose) { const f = sheetClose; sheetClose = null; f(); }
+  $('#sheetBody').innerHTML = html;
+  $('#sheetBody').scrollTop = 0;
+  sheetClose = onClose || null;
+  if (!open) { $('#sheet').classList.add('show'); Back.push('sheet', hideSheet); }
+}
+function hideSheet() {
+  $('#sheet').classList.remove('show');
+  Sound.stopPreview();
+  const f = sheetClose; sheetClose = null;
+  if (f) f();
+}
+function closeSheet() {
+  if (!$('#sheet').classList.contains('show')) return;
+  hideSheet();
+  Back.pop('sheet');
+}
+$('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
+ACT.closeSheet = () => closeSheet();
+
+function viewImage(url) {
+  if (!url) return;
+  $('#vimg').src = url;
+  $('#viewer').classList.add('show');
+  Back.push('viewer', () => $('#viewer').classList.remove('show'));
+}
+ACT.viewClose = () => {
+  if (!$('#viewer').classList.contains('show')) return;
+  $('#viewer').classList.remove('show');
+  Back.pop('viewer');
+};
+
+// ================= ابزارهای فرم =================
+const seg = (k, opts, cur) => `<div class="seg">${opts.map(([v, t]) =>
+  `<button type="button" data-act="seg" data-k="${k}" data-v="${v}" class="${v === cur ? 'on' : ''}">${t}</button>`).join('')}</div>`;
+
+const tgl = (id, label, on, sub = '') => `<label class="tg"><span>${label}${sub ? `<div class="sub">${sub}</div>` : ''}</span>
+  <span class="sw"><input type="checkbox" id="${id}" ${on ? 'checked' : ''}><span></span></span></label>`;
+
+ACT.seg = el => {
+  const d = N || E;
+  if (!d) return;
+  const v = el.dataset.v;
+  d[el.dataset.k] = isNaN(+v) ? v : +v;
+  $$('button', el.parentNode).forEach(b => b.classList.toggle('on', b === el));
+};
+
+async function hydrate(root) {
+  for (const el of $$('[data-file]', root)) {
+    const u = await fileURL(el.dataset.file);
+    if (u && el.isConnected) el.src = u;
+  }
+}
+function updateLive() {
+  $$('[data-until]').forEach(el => { el.textContent = span(+el.dataset.until - Date.now()); });
+}
+
+// ================= نمایش صفحه‌ها =================
+function render() {
+  $$('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === UI.tab));
+  const v = $('#view');
+  if (UI.tab === 'alarms') v.innerHTML = alarmsHTML();
+  else if (UI.tab === 'notes') v.innerHTML = notesHTML();
+  else if (UI.tab === 'cal') v.innerHTML = calHTML();
+  else if (typeof renderMore === 'function') renderMore(v);
+  $('#fab').hidden = UI.tab === 'more';
+  hydrate(v);
+  if (typeof banners === 'function') banners();
+}
+
+ACT.tab = el => { UI.tab = el.dataset.tab; render(); scrollTo(0, 0); };
+ACT.fab = () => (UI.tab === 'alarms' ? editAlarm() : editNote(0, UI.tab === 'cal' ? UI.sel : 0));
+
+// ================= صفحه هشدارها =================
+function alarmsHTML() {
+  const up = upcoming()[0];
+  let h = up
+    ? `<div class="card hero"><div class="sub">زنگ بعدی${up.snooze ? ' (بعد از چرت)' : ''}</div>
+       <div class="row"><div class="big">${hm(up.t)}</div>
+       <div class="grow"><b>${esc(up.a.label || 'هشدار')}</b>
+       <div class="sub">${jDate(up.t, true)}<br>تا <span data-until="${up.t}">${span(up.t - Date.now())}</span> دیگر</div></div></div></div>`
+    : `<div class="card hero c"><div class="sub">هیچ هشدار فعالی ندارید</div></div>`;
+
+  const list = [...D.alarms].sort((a, b) => a.h * 60 + a.m - (b.h * 60 + b.m));
+  if (!list.length) {
+    h += `<div class="empty">⏰<br>با دکمه + اولین هشدار بیدارباش را بسازید.<br>مثلاً «شیفت صبح»، شنبه تا چهارشنبه، ساعت ${hmOf(6, 30)}</div>`;
+  }
+  for (const a of list) {
+    const state = a.sn ? 'چرت تا ' + hm(a.sn) : a.on ? 'زنگ ' + rel(a.nx || nextTime(a)) : 'خاموش';
+    h += `<div class="card alarm${a.on || a.sn ? '' : ' off'}" data-act="editAlarm" data-id="${a.id}">
+      <div class="row"><div class="big">${hmOf(a.h, a.m)}</div>
+      <div class="grow"><b>${esc(a.label || 'هشدار')}</b>
+      <div class="sub">${daysText(a.days)}${a.days && a.skipHol ? ' · جز تعطیلات' : ''}</div>
+      <div class="sub">${state}</div></div>
+      <label class="sw"><input type="checkbox" data-chg="alarmOn" data-id="${a.id}" ${a.on ? 'checked' : ''}><span></span></label></div></div>`;
+  }
+  if (list.length) {
+    h += `<div class="card sub">🌙 برای زنگ صبح، قبل از خواب «حالت شب» را از بالای صفحه روشن کنید، برنامه را نبندید و گوشی را به شارژ بزنید.</div>`;
+  }
+  return h;
+}
+
+CHG.alarmOn = async el => {
+  const a = findItem('alarm', +el.dataset.id);
+  if (!a) return;
+  a.on = el.checked;
+  a.sn = 0;
+  a.nx = a.on ? nextTime(a) : 0;
+  await save();
+  render();
+  toast(a.on ? 'زنگ ' + rel(a.nx) : 'هشدار خاموش شد');
+};
+
+// ================= فرم هشدار =================
+const toneOpts = a => TONES.map(([v, t]) => `<option value="${v}" ${a.tone === v ? 'selected' : ''}>${t}</option>`).join('') +
+  (a.tone && a.tone.startsWith('f:') ? `<option value="${esc(a.tone)}" selected>📁 ${esc(a.toneName || 'زنگ دلخواه')}</option>` : '');
+
+function editAlarm(id) {
+  const old = id ? findItem('alarm', id) : null;
+  const draft = E = old ? { ...old } : {
+    id: 0, h: 6, m: 30, label: '', days: 31, on: true, vib: true, tone: 'mine',
+    snooze: 5, level: 1, count: 1, grad: true, skipHol: true
+  };
+  openSheet(`<h3>${old ? 'ویرایش هشدار' : 'هشدار جدید'}</h3>
+    <input type="time" id="aTime" class="tbig" dir="ltr" value="${two(E.h)}:${two(E.m)}">
+    <div class="sub c" id="aUntil"></div>
+    <div class="f"><label class="l">عنوان</label><input id="aLabel" maxlength="60" placeholder="مثلاً شیفت صبح" value="${esc(E.label)}"></div>
+    <div class="f"><label class="l">تکرار: <b id="daysTxt"></b></label>
+      <div class="chips in">${[[0, 'یک‌بار'], [31, 'شنبه تا چهارشنبه'], [63, 'شنبه تا پنجشنبه'], [127, 'هر روز']]
+        .map(([v, t]) => `<button type="button" class="chip" data-act="preset" data-v="${v}">${t}</button>`).join('')}</div>
+      <div class="days">${J.WEEK1.map((d, i) => `<button type="button" data-act="day" data-i="${i}">${d}</button>`).join('')}</div></div>
+    ${tgl('aHol', 'روزهای تعطیل زنگ نزند', E.skipHol, 'تعطیلات رسمی و روزهایی که در تقویم علامت زده‌اید')}
+    <div class="f"><label class="l">صدای زنگ</label>
+      <div class="row"><select id="aTone" class="grow">${toneOpts(E)}</select>
+      <button type="button" class="btn ghost" data-act="tonePlay" aria-label="پخش">▶</button>
+      <button type="button" class="btn ghost" data-act="tonePick" aria-label="انتخاب از حافظه">📁</button></div></div>
+    ${tgl('aGrad', 'افزایش تدریجی صدا', E.grad, 'در ۴۰ ثانیه از آرام به بلند')}
+    ${tgl('aVib', 'لرزش', E.vib)}
+    <div class="f"><label class="l">چرت (زنگ دوباره)</label>${seg('snooze', [[0, 'ندارد'], [5, '۵ دقیقه'], [10, '۱۰ دقیقه'], [15, '۱۵ دقیقه']], E.snooze)}</div>
+    <div class="f"><label class="l">سختی معمای ریاضی برای خاموش کردن</label>${seg('level', [[0, 'آسان'], [1, 'متوسط'], [2, 'سخت']], E.level)}</div>
+    <div class="f"><label class="l">تعداد معما</label>${seg('count', [[1, '۱'], [2, '۲'], [3, '۳']], E.count)}</div>
+    <div class="btns"><button class="btn acc" data-act="saveAlarm">ذخیره</button>
+      ${old ? '<button class="btn red" data-act="delAlarm">حذف</button>' : ''}
+      <button class="btn ghost" data-act="closeSheet">انصراف</button></div>`,
+    () => { if (E === draft) E = null; });
+  syncDays();
+  $('#aTime').oninput = untilA;
+  $('#aHol').onchange = untilA;
+}
+ACT.editAlarm = el => editAlarm(+el.dataset.id);
+
+function readAlarm() {
+  const [h, m] = ($('#aTime').value || '06:30').split(':').map(Number);
+  return {
+    ...E, h, m, label: $('#aLabel').value.trim(), skipHol: $('#aHol').checked,
+    grad: $('#aGrad').checked, vib: $('#aVib').checked, tone: $('#aTone').value
+  };
+}
+function untilA() {
+  const t = nextTime(readAlarm());
+  $('#aUntil').textContent = 'زنگ ' + span(t - Date.now()) + ' دیگر · ' + jDate(t, true);
+}
+function syncDays() {
+  $$('.days button').forEach(b => b.classList.toggle('on', !!(E.days & (1 << +b.dataset.i))));
+  $('#daysTxt').textContent = daysText(E.days);
+  untilA();
+}
+ACT.day = el => { if (E) { E.days ^= 1 << +el.dataset.i; syncDays(); } };
+ACT.preset = el => { if (E) { E.days = +el.dataset.v; syncDays(); } };
+ACT.tonePlay = () => Sound.preview($('#aTone').value);
+ACT.tonePick = () => $('#toneIn').click();
+
+$('#toneIn').onchange = async e => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  if (!f || !E) return;
+  if (f.size > 15 * 1048576) return toast('فایل زنگ نباید بیشتر از ۱۵ مگابایت باشد');
+  const key = await putFile(f);
+  E.tone = 'f:' + key;
+  E.toneName = f.name;
+  $('#aTone').innerHTML = toneOpts(E);
+  toast('زنگ انتخاب شد: ' + f.name);
+};
+
+ACT.saveAlarm = async () => {
+  if (!E) return;
+  const a = readAlarm();
+  if (!a.id) a.id = newId();
+  a.on = true;
+  a.sn = 0;
+  a.nx = nextTime(a);
+  const i = D.alarms.findIndex(x => x.id === a.id);
+  if (i >= 0) D.alarms[i] = a; else D.alarms.push(a);
+  await save();
+  closeSheet();
+  render();
+  toast('هشدار تنظیم شد: ' + span(a.nx - Date.now()) + ' دیگر');
+};
+
+ACT.delAlarm = async () => {
+  if (!E || !confirm('این هشدار حذف شود؟')) return;
+  const id = E.id;
+  D.alarms = D.alarms.filter(x => x.id !== id);
+  await save();
+  closeSheet();
+  render();
+  toast('هشدار حذف شد');
+};
+
+// ================= صفحه یادداشت‌ها =================
+const FILTERS = [['undone', 'انجام‌نشده'], ['today', 'امروز'], ['late', 'عقب‌افتاده'], ['done', 'انجام‌شده'], ['all', 'همه']];
+const isLate = (n, now = Date.now()) => !n.done && n.at && n.at < now;
+const isToday = (n, now = Date.now()) => !n.done && n.at && dayKey(n.at) === dayKey(now);
+
+function notesHTML() {
+  const now = Date.now(), c = { undone: 0, late: 0, today: 0, done: 0 };
+  D.notes.forEach(n => {
+    if (n.done) c.done++; else c.undone++;
+    if (isLate(n, now)) c.late++;
+    if (isToday(n, now)) c.today++;
+  });
+  return `<div class="card stats">
+      <div><b>${fa(c.undone)}</b>انجام‌نشده</div>
+      <div><b class="${c.late ? 'red' : ''}">${fa(c.late)}</b>عقب‌افتاده</div>
+      <div><b>${fa(c.today)}</b>امروز</div>
+      <div><b>${fa(c.done)}</b>انجام‌شده</div></div>
+    <div class="px"><input id="nq" type="search" placeholder="🔍 جستجو در یادداشت‌ها" value="${esc(UI.q)}"></div>
+    <div class="chips">${FILTERS.map(([v, t]) => `<button class="chip ${UI.filter === v ? 'on' : ''}" data-act="filter" data-v="${v}">${t}</button>`).join('')}</div>
+    <div id="nlist">${noteList()}</div>`;
+}
+
+function noteList() {
+  const now = Date.now(), q = en(UI.q).trim().toLowerCase(), f = UI.filter;
+  const L = D.notes.filter(n => {
+    if (f === 'undone' && n.done) return false;
+    if (f === 'done' && !n.done) return false;
+    if (f === 'late' && !isLate(n, now)) return false;
+    if (f === 'today' && !isToday(n, now)) return false;
+    return !q || en((n.title || '') + ' ' + (n.text || '')).toLowerCase().includes(q);
+  });
+  if (f === 'done') L.sort((a, b) => (b.doneAt || 0) - (a.doneAt || 0));
+  else L.sort((a, b) => a.done - b.done || b.pri - a.pri || (a.at || 9e15) - (b.at || 9e15) || b.created - a.created);
+  if (!L.length) {
+    return `<div class="empty">📝<br>${D.notes.length ? 'یادداشتی با این شرایط پیدا نشد.'
+      : 'با دکمه + یادداشت بسازید: متن، عکس، ویدیو یا صدا،<br>و برای روزی که می‌خواهید یادآوری شود زنگ بگذارید.'}</div>`;
+  }
+  return L.map(noteCard).join('');
+}
+
+function noteCard(n) {
+  const icons = { image: '🖼', video: '🎬', audio: '🎙' }, cnt = {};
+  (n.atts || []).forEach(a => { cnt[a.type] = (cnt[a.type] || 0) + 1; });
+  const img = (n.atts || []).find(a => a.type === 'image');
+  const text = n.text || '';
+  const title = n.title || text.split('\n')[0].slice(0, 50) || ((n.atts || []).length ? 'پیوست' : 'بدون عنوان');
+  return `<div class="card note p${n.pri}${n.done ? ' done' : ''}" data-act="editNote" data-id="${n.id}">
+    <div class="row">
+      <label class="ck"><input type="checkbox" data-chg="noteDone" data-id="${n.id}" ${n.done ? 'checked' : ''}><span></span></label>
+      <div class="grow"><div class="nt">${esc(title)}</div>
+        ${text && n.title ? `<div class="sub">${esc(text.slice(0, 90))}${text.length > 90 ? '…' : ''}</div>` : ''}
+        ${Object.keys(cnt).length ? `<div class="sub">${Object.entries(cnt).map(([t, c]) => icons[t] + ' ' + fa(c)).join('   ')}</div>` : ''}
+      </div>
+      ${img ? `<img data-file="${img.key}" alt="" style="width:52px;height:52px;object-fit:cover;border-radius:10px;flex:none">` : ''}
+    </div>
+    ${n.at ? `<div class="when ${isLate(n) ? 'red' : ''}">${n.ring ? '⏰' : '🔔'} ${jDate(n.at, true)}، ساعت ${hm(n.at)} · ${n.done ? 'انجام شد' : rel(n.at)}${n.sn ? ' · چرت تا ' + hm(n.sn) : ''}</div>` : ''}
+    <div class="meta">ثبت: ${stamp(n.created)}</div></div>`;
+}
+
+ACT.filter = el => { UI.filter = el.dataset.v; render(); };
+ACT.editNote = el => editNote(+el.dataset.id);
+
+document.addEventListener('input', e => {
+  if (e.target.id !== 'nq') return;
+  UI.q = e.target.value;
+  $('#nlist').innerHTML = noteList();
+  hydrate($('#nlist'));
+});
+
+function setDone(n, done) {
+  n.done = done;
+  n.doneAt = done ? Date.now() : 0;
+  n.sn = 0;
+  if (!done && n.at && n.at > Date.now()) n.fired = false;
+  if (done && typeof clearNotif === 'function') clearNotif('note', n.id);
+}
+CHG.noteDone = async el => {
+  const n = findItem('note', +el.dataset.id);
+  if (!n) return;
+  setDone(n, el.checked);
+  await save();
+  render();
+  if (el.checked) toast('✓ انجام شد');
+};
+
+// ================= فرم یادداشت =================
+const atTime = (days, h) => {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  d.setHours(h, 0, 0, 0);
+  if (d.getTime() <= Date.now()) d.setDate(d.getDate() + 1);
+  return d.getTime();
+};
+const QUICK = [
+  ['۱ ساعت بعد', () => Math.ceil((Date.now() + HOUR) / MIN) * MIN],
+  ['امشب ۲۱:۰۰', () => atTime(0, 21)],
+  ['فردا ۸:۰۰', () => atTime(1, 8)],
+  ['شنبه ۷:۰۰', () => atTime((7 - J.weekIdx(Date.now())) % 7 || 7, 7)],
+  ['هفته بعد', () => Date.now() + 7 * DAY]
+];
+const defaultAt = () => { const d = new Date(Date.now() + HOUR); d.setMinutes(0, 0, 0); return d.getTime(); };
+
+function editNote(id, presetDay) {
+  const old = id ? findItem('note', id) : null;
+  const draft = N = old ? JSON.parse(JSON.stringify(old)) : {
+    id: 0, title: '', text: '', created: Date.now(), at: null, ring: true, done: false, pri: 1, atts: []
+  };
+  N.atts = N.atts || [];
+  N.added = [];
+  N.removed = [];
+  if (!old && presetDay) {
+    const t = J.toMs(Math.floor(presetDay / 10000), Math.floor(presetDay / 100) % 100, presetDay % 100, 9, 0);
+    N.at = t > Date.now() ? t : defaultAt();
+  }
+  const t0 = N.at || defaultAt(), d0 = new Date(t0);
+
+  openSheet(`<h3>${old ? 'ویرایش یادداشت' : 'یادداشت جدید'}</h3>
+    <div class="f"><input id="nTitle" maxlength="100" placeholder="عنوان، مثلاً بازدید نوار نقاله" value="${esc(N.title)}"></div>
+    <div class="f"><textarea id="nText" rows="4" placeholder="متن یادداشت…">${esc(N.text)}</textarea></div>
+    <div class="f"><label class="l">پیوست‌ها (عکس، ویدیو، صدا)</label>
+      <div class="abtn">
+        <button type="button" data-act="att" data-k="photo">📷<br>عکس</button>
+        <button type="button" data-act="att" data-k="video">🎥<br>ویدیو</button>
+        <button type="button" data-act="rec" id="recBtn">🎙<br>ضبط صدا</button>
+        <button type="button" data-act="att" data-k="file">📁<br>از حافظه</button>
+      </div>
+      <div id="recBar"></div><div class="atts" id="nAtts"></div></div>
+    ${tgl('nRem', 'یادآوری در روز و ساعت مشخص', !!N.at)}
+    <div id="remBox" ${N.at ? '' : 'hidden'}>
+      <div class="chips in">${QUICK.map((q, i) => `<button type="button" class="chip" data-act="quick" data-i="${i}">${q[0]}</button>`).join('')}</div>
+      <div class="dp"><select id="nD" aria-label="روز"></select>
+        <select id="nM" aria-label="ماه">${J.MONTHS.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('')}</select>
+        <select id="nY" aria-label="سال"></select></div>
+      <div class="f"><input type="time" id="nTime" class="tbig" dir="ltr" value="${two(d0.getHours())}:${two(d0.getMinutes())}"></div>
+      <div class="geq" id="nGeq"></div>
+      ${tgl('nRing', 'با زنگ هشدار و معمای ریاضی', N.ring, 'اگر خاموش باشد، فقط اعلان و صدای کوتاه پخش می‌شود')}
+    </div>
+    <div class="f"><label class="l">اولویت</label>${seg('pri', [[0, 'کم'], [1, 'معمولی'], [2, 'فوری']], N.pri)}</div>
+    <div class="meta">تاریخ ثبت: ${stamp(N.created)}${N.done && N.doneAt ? '<br>انجام‌شده در: ' + stamp(N.doneAt) : ''}</div>
+    <div class="btns"><button class="btn acc" data-act="saveNote">ذخیره</button>
+      ${old ? `<button class="btn ${N.done ? 'ghost' : ''}" data-act="toggleDone">${N.done ? 'برگرداندن به انجام‌نشده' : '✓ انجام شد'}</button>
+      <button class="btn red" data-act="delNote">حذف</button>` : ''}
+      <button class="btn ghost" data-act="closeSheet">انصراف</button></div>`,
+    () => discardNote(draft));
+
+  setAt(t0);
+  if (!N.at) N.at = null;
+  for (const k of ['nY', 'nM']) $('#' + k).onchange = () => { fillDays(); readAt(); };
+  $('#nD').onchange = readAt;
+  $('#nTime').oninput = readAt;
+  $('#nRem').onchange = e => { $('#remBox').hidden = !e.target.checked; if (e.target.checked) readAt(); };
+  drawAtts();
+}
+
+function fillYears(jy) {
+  const y0 = J.of(Date.now())[0];
+  let h = '';
+  for (let y = Math.min(jy, y0) - 1; y <= Math.max(jy, y0) + 5; y++) h += `<option value="${y}">${fa(y)}</option>`;
+  $('#nY').innerHTML = h;
+  $('#nY').value = jy;
+}
+function fillDays() {
+  const y = +$('#nY').value, m = +$('#nM').value, cur = +$('#nD').value || 1, len = J.monthLen(y, m);
+  $('#nD').innerHTML = Array.from({ length: len }, (_, i) => `<option value="${i + 1}">${fa(i + 1)}</option>`).join('');
+  $('#nD').value = Math.min(cur, len);
+}
+function setAt(t) {
+  const [y, m, d] = J.of(t), x = new Date(t);
+  fillYears(y);
+  $('#nM').value = m;
+  fillDays();
+  $('#nD').value = d;
+  $('#nTime').value = two(x.getHours()) + ':' + two(x.getMinutes());
+  readAt();
+}
+function readAt() {
+  if (!N) return;
+  const [h, m] = ($('#nTime').value || '09:00').split(':').map(Number);
+  const y = +$('#nY').value, mo = +$('#nM').value, d = +$('#nD').value;
+  const t = J.toMs(y, mo, d, h, m), hn = holiday(y, mo, d);
+  if ($('#nRem').checked) N.at = t;
+  $('#nGeq').innerHTML = `📅 ${jDate(t, true)}، ساعت ${hm(t)}<br>🌐 میلادی: ${gDate(t)}<br>` +
+    (t <= Date.now() ? '<span class="red">⚠️ این زمان گذشته است</span>' : '⏳ ' + rel(t)) +
+    (hn ? '<br><span class="red">🔴 تعطیل: ' + esc(hn) + '</span>' : J.weekIdx(t) === 6 ? '<br><span class="red">🔴 جمعه</span>' : '');
+}
+ACT.quick = el => { $('#nRem').checked = true; $('#remBox').hidden = false; setAt(QUICK[+el.dataset.i][1]()); };
+
+async function drawAtts() {
+  const box = $('#nAtts');
+  if (!box || !N) return;
+  box.innerHTML = N.atts.map((a, i) => {
+    const x = `<button type="button" class="x" data-act="attDel" data-i="${i}" aria-label="حذف">×</button>`;
+    if (a.type === 'audio') return `<div class="att audio"><audio controls preload="metadata" data-file="${a.key}"></audio>${x}</div>`;
+    if (a.type === 'image') return `<div class="att"><img data-file="${a.key}" data-act="attView" data-i="${i}" alt="">${x}</div>`;
+    return `<div class="att"><video data-file="${a.key}" controls playsinline preload="metadata"></video>${x}</div>`;
+  }).join('');
+  hydrate(box);
+}
+ACT.attView = el => { if (N) fileURL(N.atts[+el.dataset.i].key).then(viewImage); };
+ACT.attDel = el => {
+  if (!N) return;
+  const [a] = N.atts.splice(+el.dataset.i, 1);
+  if (a) N.removed.push(a.key);
+  drawAtts();
+};
+
+ACT.att = el => {
+  const p = $('#picker'), k = el.dataset.k;
+  p.accept = k === 'photo' ? 'image/*' : k === 'video' ? 'video/*' : 'image/*,video/*,audio/*';
+  p.multiple = k === 'file';
+  if (k === 'file') p.removeAttribute('capture'); else p.setAttribute('capture', 'environment');
+  p.click();
+};
+$('#picker').onchange = async e => {
+  const files = [...e.target.files];
+  e.target.value = '';
+  if (N) await addFiles(files);
+};
+async function addFiles(files) {
+  const draft = N;
+  let count = 0;
+  for (const f of files) {
+    const type = (f.type || '').split('/')[0];
+    if (!['image', 'video', 'audio'].includes(type)) { toast('فقط عکس، ویدیو و صدا پشتیبانی می‌شود'); continue; }
+    if (f.size > 200 * 1048576) { toast('فایل بزرگ‌تر از ۲۰۰ مگابایت است: ' + f.name); continue; }
+    const key = await putFile(f);
+    draft.atts.push({ type, key, name: f.name || type, size: f.size });
+    draft.added.push(key);
+    count++;
+  }
+  if (N === draft) drawAtts();
+  if (count) toast(count + ' فایل اضافه شد');
+}
+
+const Rec = { mr: null, stream: null, chunks: [], t0: 0, timer: 0, owner: null, after: null };
+ACT.rec = async () => {
+  if (Rec.mr) return stopRec();
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+    return toast('ضبط صدا در این مرورگر پشتیبانی نمی‌شود');
+  }
+  try { Rec.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) { return toast('اجازه دسترسی به میکروفون داده نشد'); }
+  const type = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+  Rec.mr = new MediaRecorder(Rec.stream, type ? { mimeType: type } : {});
+  Rec.chunks = [];
+  Rec.owner = N;
+  Rec.mr.ondataavailable = e => { if (e.data.size) Rec.chunks.push(e.data); };
+  Rec.mr.onstop = saveRec;
+  Rec.mr.start(1000);
+  Rec.t0 = Date.now();
+  $('#recBtn').innerHTML = '⏹<br>توقف';
+  const bar = () => {
+    const s = Math.floor((Date.now() - Rec.t0) / 1000), b = $('#recBar');
+    if (b) b.innerHTML = `<div class="recbar">🔴 در حال ضبط <b dir="ltr">${fa(two(Math.floor(s / 60)) + ':' + two(s % 60))}</b></div>`;
+  };
+  bar();
+  Rec.timer = setInterval(bar, 500);
+};
+function stopRec() {
+  return new Promise(res => {
+    if (!Rec.mr || Rec.mr.state === 'inactive') return res();
+    Rec.after = res;
+    Rec.mr.stop();
+  });
+}
+async function saveRec() {
+  try {
+    clearInterval(Rec.timer);
+    if (Rec.stream) Rec.stream.getTracks().forEach(t => t.stop());
+    const blob = new Blob(Rec.chunks, { type: (Rec.mr && Rec.mr.mimeType) || 'audio/webm' });
+    const d = Rec.owner;
+    Rec.mr = null; Rec.stream = null; Rec.owner = null;
+    const b = $('#recBar'), rb = $('#recBtn');
+    if (b) b.innerHTML = '';
+    if (rb) rb.innerHTML = '🎙<br>ضبط صدا';
+    if (!d || d !== N || !blob.size) return;
+    const key = await putFile(blob);
+    d.atts.push({ type: 'audio', key, name: 'ویس ' + jDate(Date.now()) + ' ' + hm(Date.now()), size: blob.size });
+    d.added.push(key);
+    drawAtts();
+    toast('صدا ضبط شد');
+  } finally {
+    if (Rec.after) { Rec.after(); Rec.after = null; }
+  }
+}
+
+function discardNote(d) {
+  if (N === d) N = null;
+  if (Rec.mr && Rec.owner === d) stopRec();
+  if (!d.saved) d.added.forEach(k => delFile(k));
+}
+
+ACT.saveNote = async () => {
+  if (!N) return;
+  if (Rec.mr) await stopRec();
+  const n = N;
+  n.title = $('#nTitle').value.trim();
+  n.text = $('#nText').value.trim();
+  if (!n.title && !n.text && !n.atts.length) return toast('عنوان، متن یا یک پیوست وارد کنید');
+  const prevAt = (findItem('note', n.id) || {}).at || null;
+  if ($('#nRem').checked) { readAt(); n.ring = $('#nRing').checked; } else n.at = null;
+  if (n.at !== prevAt) { n.fired = !!n.at && n.at <= Date.now(); n.sn = 0; }
+  if (!n.id) n.id = newId();
+  const item = { ...n };
+  delete item.added; delete item.removed; delete item.saved;
+  const i = D.notes.findIndex(x => x.id === item.id);
+  if (i >= 0) D.notes[i] = item; else D.notes.push(item);
+  n.saved = true;
+  await save();
+  const used = usedKeys();
+  n.removed.forEach(k => { if (!used.has(k)) delFile(k); });
+  closeSheet();
+  render();
+  toast(item.at && item.at > Date.now() && !item.done ? 'ذخیره شد · یادآوری ' + rel(item.at) : 'یادداشت ذخیره شد');
+};
+
+ACT.toggleDone = () => {
+  if (!N) return;
+  N.done = !N.done;
+  N.doneAt = N.done ? Date.now() : 0;
+  N.sn = 0;
+  if (N.done && typeof clearNotif === 'function') clearNotif('note', N.id);
+  ACT.saveNote();
+};
+
+ACT.delNote = async () => {
+  if (!N || !confirm('این یادداشت و همه پیوست‌هایش حذف شود؟')) return;
+  const saved = findItem('note', N.id);
+  const keys = [...(saved ? (saved.atts || []).map(a => a.key) : []), ...N.added];
+  D.notes = D.notes.filter(x => x.id !== N.id);
+  N.saved = true;
+  await save();
+  keys.forEach(k => delFile(k));
+  closeSheet();
+  render();
+  toast('یادداشت حذف شد');
+};
+
+// ================= تقویم ماهانه =================
+function calHTML() {
+  const now = Date.now(), [ty, tm] = J.of(now), today = dayKey(now);
+  if (!UI.cy) { UI.cy = ty; UI.cm = tm; }
+  if (!UI.sel) UI.sel = today;
+  const y = UI.cy, m = UI.cm, len = J.monthLen(y, m), first = J.toMs(y, m, 1, 12);
+  const marks = new Set();
+  D.notes.forEach(n => { if (n.at) marks.add(dayKey(n.at)); });
+
+  let cells = J.WEEK1.map(w => `<div class="h">${w}</div>`).join('') + '<div></div>'.repeat(J.weekIdx(first));
+  for (let d = 1; d <= len; d++) {
+    const t = J.toMs(y, m, d, 12), k = y * 10000 + m * 100 + d;
+    const cls = ['d', (J.weekIdx(t) === 6 || holiday(y, m, d)) && 'hol', k === today && 'today',
+      k === UI.sel && 'sel', marks.has(k) && 'dot'].filter(Boolean).join(' ');
+    cells += `<div class="${cls}" data-act="calDay" data-k="${k}">${fa(d)}<small>${fa(new Date(t).getDate())}</small></div>`;
+  }
+  const g1 = new Date(first), g2 = new Date(J.toMs(y, m, len, 12));
+  const gm = g1.getMonth() === g2.getMonth() ? J.GMONTHS[g1.getMonth()] : J.GMONTHS[g1.getMonth()] + ' – ' + J.GMONTHS[g2.getMonth()];
+
+  return `<div class="card">
+      <div class="row"><button class="cn" data-act="calMove" data-v="-1" aria-label="ماه قبل">▶</button>
+        <div class="grow c"><b>${J.MONTHS[m - 1]} ${fa(y)}</b><div class="sub">${gm} ${fa(g2.getFullYear())}</div></div>
+        <button class="cn" data-act="calMove" data-v="1" aria-label="ماه بعد">◀</button></div>
+      <div class="cal">${cells}</div>
+      ${y !== ty || m !== tm ? '<div class="c mt"><button class="chip" data-act="calToday">برو به امروز</button></div>' : ''}
+    </div>${dayHTML(UI.sel)}`;
+}
+
+function dayHTML(k) {
+  const y = Math.floor(k / 10000), m = Math.floor(k / 100) % 100, d = k % 100;
+  const t = J.toMs(y, m, d, 12), start = J.toMs(y, m, d);
+  const hn = holiday(y, m, d), custom = (D.settings.hol || {})[y + '-' + m + '-' + d];
+  const due = D.notes.filter(n => n.at && dayKey(n.at) === k).sort((a, b) => a.at - b.at);
+  const made = D.notes.filter(n => dayKey(n.created) === k && !due.includes(n));
+  const rings = start + DAY < Date.now() ? [] : D.alarms.filter(a => {
+    if (!a.on) return false;
+    const ts = J.toMs(y, m, d, a.h, a.m);
+    return a.days ? nextTime(a, ts - 1) === ts : a.nx && dayKey(a.nx) === k;
+  });
+  const list = (arr, label) => (arr.length ? `<div class="sec">${label}</div>` + arr.map(noteCard).join('') : '');
+  const holBtn = HOLIDAYS[m + '-' + d] && !custom ? ''
+    : `<button class="btn ghost" data-act="calHol">${custom ? 'برداشتن تعطیلی' : '🔴 علامت تعطیل'}</button>`;
+
+  return `<div class="card"><b>${jDate(t, true)}</b>
+      <div class="sub">${gDate(t)}${hn ? ' · <span class="red">' + esc(hn) + '</span>' : J.weekIdx(t) === 6 ? ' · <span class="red">جمعه</span>' : ''}</div>
+      ${rings.length ? `<div class="sub mt">⏰ ${rings.map(a => hmOf(a.h, a.m) + ' ' + esc(a.label || '')).join('، ')}</div>` : ''}
+      <div class="btns"><button class="btn acc" data-act="calNote">➕ یادداشت برای این روز</button>${holBtn}</div></div>
+    ${list(due, '📌 یادآوری‌های این روز')}${list(made, '🗂 ثبت‌شده در این روز')}
+    ${!due.length && !made.length ? '<div class="empty">برای این روز یادداشتی ثبت نشده است.</div>' : ''}`;
+}
+
+ACT.calDay = el => { UI.sel = +el.dataset.k; render(); };
+ACT.calMove = el => {
+  UI.cm += +el.dataset.v;
+  if (UI.cm > 12) { UI.cm = 1; UI.cy++; }
+  if (UI.cm < 1) { UI.cm = 12; UI.cy--; }
+  render();
+};
+ACT.calToday = () => { [UI.cy, UI.cm] = J.of(Date.now()); UI.sel = dayKey(Date.now()); render(); };
+ACT.calNote = () => editNote(0, UI.sel);
+ACT.calHol = async () => {
+  const k = UI.sel, key = Math.floor(k / 10000) + '-' + (Math.floor(k / 100) % 100) + '-' + (k % 100);
+  const hol = D.settings.hol;
+  if (hol[key]) delete hol[key];
+  else {
+    const name = prompt('عنوان تعطیلی (مثلاً عاشورا یا تعطیلی مجتمع):', 'تعطیل');
+    if (name === null) return;
+    hol[key] = name.trim() || 'تعطیل';
+  }
+  D.alarms.forEach(a => { if (a.on) a.nx = nextTime(a); });
+  await save();
+  render();
+};
+</script>
+<script>
+/* =====================================================================
+   یادآور چادرملو — بخش ۴ از ۴: زنگ، حالت شب، اعلان‌ها، تنظیمات و PWA
+   مجتمع معدنی و صنعتی چادرملو · طراحی و توسعه: یاسین مظفری
+   ===================================================================== */
+'use strict';
+
+const WEB = /^https?:$/.test(location.protocol);
+const STANDALONE = matchMedia('(display-mode: standalone)').matches;
+const MODE = STANDALONE ? 'برنامه نصب‌شده (PWA)' : WEB ? 'مرورگر (قابل نصب)' : 'فایل HTML روی گوشی';
+let REG = null;
+let INSTALL = null;
+
+// ================= اعلان‌ها =================
+async function notify(kind, id, title, body, opts = {}) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  const o = {
+    body, tag: kind + '-' + id, renotify: true, dir: 'rtl', lang: 'fa', icon: 'icon-192.png',
+    data: { kind, id }, silent: !!opts.silent, requireInteraction: !!opts.ring
+  };
+  if (opts.ring) o.vibrate = [900, 500, 900, 500, 900];
+  try {
+    if (REG) { if (opts.actions && opts.actions.length) o.actions = opts.actions; await REG.showNotification(title, o); }
+    else new Notification(title, o);
+  } catch (_) {}
+}
+async function clearNotif(kind, id) {
+  if (!REG) return;
+  try { (await REG.getNotifications({ tag: kind + '-' + id })).forEach(n => n.close()); } catch (_) {}
+}
+
+function remind(n) {
+  notify('note', n.id, '📝 ' + (n.title || 'یادآوری کار'), (n.text || 'زمان انجام این کار رسیده است').slice(0, 200), {
+    actions: [{ action: 'done', title: '✓ انجام شد' }, { action: 'later', title: '۱۰ دقیقه بعد' }]
+  });
+  Sound.chime();
+  toast('📝 یادآوری: ' + (n.title || n.text || 'یادداشت').slice(0, 50), 6000);
+}
+
+function digest() {
+  const now = Date.now(), undone = D.notes.filter(n => !n.done);
+  if (!undone.length) return;
+  const late = undone.filter(n => n.at && n.at < now).length;
+  notify('digest', 0, fa(undone.length) + ' کار انجام‌نشده' + (late ? ' (' + fa(late) + ' عقب‌افتاده)' : ''),
+    undone.slice(0, 5).map(n => '• ' + (n.title || n.text || 'بدون عنوان').slice(0, 50)).join('\n'));
+}
+
+async function handleNotif(m) {
+  const id = +m.id, isRinging = ringing && ringing.kind === m.kind && ringing.id === id;
+  if (m.kind === 'digest') { UI.tab = 'notes'; UI.filter = 'undone'; return render(); }
+  const item = findItem(m.kind, id);
+  if (!item) return;
+  if (m.action === 'snooze' || m.action === 'later') {
+    if (isRinging) { if (!R.snooze) R.snooze = 10; return ACT.ringSnooze(); }
+    item.sn = Date.now() + (m.kind === 'alarm' ? item.snooze || 5 : 10) * MIN;
+    await save(); render();
+    return toast('زنگ ' + rel(item.sn) + ' دوباره پخش می‌شود');
+  }
+  if (m.action === 'done' && m.kind === 'note') {
+    setDone(item, true); await save(); render();
+    return toast('✓ انجام شد');
+  }
+  if (isRinging) return;
+  if (m.kind === 'note') { UI.tab = 'notes'; render(); editNote(id); }
+  else { UI.tab = 'alarms'; render(); }
+}
+
+// ================= صفحه زنگ و معمای ریاضی =================
+const R = { kind: null, id: 0, level: 0, left: 0, total: 0, snooze: 0, p: null };
+
+function showRing(kind, item) {
+  const isA = kind === 'alarm';
+  Object.assign(R, { kind, id: item.id, level: isA ? item.level : D.settings.pzNote, snooze: isA ? item.snooze : 10 });
+  R.total = R.left = R.level < 0 ? 0 : isA ? item.count || 1 : 1;
+  drawRing();
+  if (!$('#ring').classList.contains('show')) { $('#ring').classList.add('show'); Back.push('ring', ringBack); }
+  Wake.set('ring', true);
+  Sound.ring(isA ? item.tone : 'bell', isA ? item.grad : false).then(ok => {
+    const t = $('#rTap');
+    if (!ok && t) t.innerHTML = '<button class="btn acc w mt" data-act="ringPlay">🔊 برای پخش صدای زنگ لمس کنید</button>';
+  });
+  if (!isA || item.vib) Sound.vibrate(true);
+  notify(kind, item.id, isA ? '⏰ ' + (item.label || 'زنگ بیدارباش') : '📝 ' + (item.title || 'یادآوری کار'),
+    isA ? 'برای خاموش کردن، برنامه را باز کنید و معما را حل کنید' : (item.text || 'زمان انجام این کار رسیده است').slice(0, 200),
+    { ring: true, actions: R.snooze ? [{ action: isA ? 'snooze' : 'later', title: '😴 ' + fa(R.snooze) + ' دقیقه بعد' }] : [] });
+}
+
+function drawRing() {
+  const item = findItem(R.kind, R.id);
+  if (!item) return;
+  const isA = R.kind === 'alarm', atts = isA ? [] : item.atts || [];
+  const img = atts.find(a => a.type === 'image');
+  $('#ringBody').innerHTML = `<div class="sub">${isA ? '⏰ هشدار' : '📝 یادآوری'} · ${jDate(Date.now(), true)}</div>
+    <div class="rt" id="rTime" dir="ltr">${hm(Date.now())}</div>
+    <div class="rtitle">${esc(isA ? item.label || 'زنگ بیدارباش' : item.title || 'یادآوری کار')}</div>
+    ${!isA && item.text ? `<div class="rtext">${esc(item.text.slice(0, 300))}</div>` : ''}
+    ${img ? `<img data-file="${img.key}" alt="" style="max-width:100%;max-height:28vh;border-radius:14px;margin-top:8px">` : ''}
+    ${atts.length ? `<div class="sub">${fa(atts.length)} پیوست · بعد از خاموش کردن زنگ، یادداشت باز می‌شود</div>` : ''}
+    <div id="rTap"></div>
+    ${puzzleHTML()}
+    ${R.snooze ? `<div class="btns"><button class="btn ghost" data-act="ringSnooze">😴 ${fa(R.snooze)} دقیقه دیگر</button></div>` : ''}
+    <div class="sub mt">مجتمع معدنی و صنعتی چادرملو</div>`;
+  hydrate($('#ringBody'));
+}
+
+function puzzleHTML() {
+  if (R.left <= 0) return '<div class="puz"><button class="btn acc w" data-act="ringOff">خاموش کردن زنگ</button></div>';
+  R.p = Puzzle.make(R.level);
+  return `<div class="puz" id="puz">
+    <div class="sub">برای خاموش کردن زنگ، معما را حل کنید${R.total > 1 ? ` (${fa(R.total - R.left + 1)} از ${fa(R.total)})` : ''}</div>
+    <div class="pe" dir="ltr">${fa(R.p.q)} = ?</div>
+    <input id="pans" inputmode="numeric" autocomplete="off" placeholder="جواب">
+    <button class="btn acc w" data-act="ringCheck">تأیید</button></div>`;
+}
+
+function shake() {
+  const b = $('#ringBody');
+  b.classList.remove('shake');
+  void b.offsetWidth;
+  b.classList.add('shake');
+}
+function ringBack() { Back.push('ring', ringBack); shake(); toast('برای خاموش کردن زنگ، معما را حل کنید'); }
+
+ACT.ringCheck = () => {
+  const inp = $('#pans');
+  if (!inp || !R.p) return;
+  if (!en(inp.value).replace(/[^\d]/g, '')) { shake(); return toast('اول جواب را وارد کنید'); }
+  if (!Puzzle.check(R.p, inp.value)) { shake(); toast('اشتباه بود؛ این معمای تازه را حل کنید'); $('#puz').outerHTML = puzzleHTML(); return; }
+  R.left--;
+  if (R.left > 0) { $('#puz').outerHTML = puzzleHTML(); toast('درست بود ✓ یکی دیگر'); }
+  else { toast('✓ زنگ خاموش شد'); stopRing(true); }
+};
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'pans') ACT.ringCheck(); });
+
+ACT.ringOff = () => stopRing(true);
+ACT.ringPlay = () => {
+  const it = findItem(R.kind, R.id);
+  if (it) Sound.ring(R.kind === 'alarm' ? it.tone : 'bell', false);
+  $('#rTap').innerHTML = '';
+};
+ACT.ringSnooze = async () => {
+  const item = findItem(R.kind, R.id);
+  if (item && R.snooze) {
+    item.sn = Date.now() + R.snooze * MIN;
+    await save();
+    toast('زنگ ' + fa(R.snooze) + ' دقیقه دیگر دوباره پخش می‌شود');
+  }
+  stopRing(false);
+};
+
+function stopRing(open) {
+  const kind = R.kind, id = R.id, item = findItem(kind, id);
+  Sound.stop();
+  clearNotif(kind, id);
+  R.kind = null;
+  if (item && item.test) { D.alarms = D.alarms.filter(a => a !== item); save(); }
+  if (Q.length) { nextRing(); if (ringing) return; }
+  ringing = null;
+  $('#ring').classList.remove('show');
+  Wake.set('ring', false);
+  Back.pop('ring');
+  render();
+  if (open && kind === 'note' && item) setTimeout(() => editNote(id), 350);
+}
+
+// ================= حالت شب =================
+ACT.night = async () => {
+  const ok = await Sound.guard(true);
+  D.settings.guard = true;
+  save();
+  if (!$('#night').classList.contains('show')) {
+    $('#night').classList.add('show');
+    Back.push('night', () => nightOff(false));
+  }
+  Wake.set('night', true);
+  uiTick();
+  banners();
+  toast(ok ? 'حالت شب روشن شد. گوشی را به شارژ بزنید؛ می‌توانید صفحه را خاموش کنید'
+    : 'پخش صدای پس‌زمینه ممکن نشد؛ صفحه را روشن نگه دارید', 6000);
+};
+function nightOff(pop) {
+  $('#night').classList.remove('show');
+  Wake.set('night', false);
+  Sound.guard(false);
+  D.settings.guard = false;
+  save();
+  banners();
+  if (pop) Back.pop('night');
+  toast('حالت شب خاموش شد');
+}
+ACT.nightOff = () => nightOff(true);
+
+// ================= ساعت بالای صفحه =================
+let lastMin = -1;
+function uiTick() {
+  const now = Date.now(), d = new Date(now);
+  $('#clk').innerHTML = fa(two(d.getHours()) + ':' + two(d.getMinutes())) + '<small>:' + fa(two(d.getSeconds())) + '</small>';
+  if (d.getMinutes() !== lastMin) {
+    lastMin = d.getMinutes();
+    $('#today').textContent = jDate(now, true) + ' · ' + gDate(now);
+    if (UI.tab !== 'more' && !(document.activeElement && document.activeElement.id === 'nq')) render();
+  }
+  if ($('#night').classList.contains('show')) {
+    const up = upcoming()[0];
+    $('#nc').textContent = fa(two(d.getHours()) + ':' + two(d.getMinutes()));
+    $('#nd').textContent = jDate(now, true);
+    $('#nn').textContent = up ? '⏰ زنگ بعدی ' + hm(up.t) + ' · ' + span(up.t - now) + ' دیگر' : 'هیچ هشدار فعالی ندارید';
+  }
+  const rt = $('#rTime');
+  if (rt && R.kind) rt.textContent = hm(now);
+}
+
+// ================= پیام‌های بالای صفحه =================
+function banners() {
+  const b = [];
+  if (!STORE_OK) b.push('⚠️ حافظه مرورگر در دسترس نیست و اطلاعات ذخیره نمی‌شود. برنامه را با Chrome یا از آدرس اینترنتی آن باز کنید.');
+  if ('Notification' in window && Notification.permission === 'default' && (D.alarms.length || D.notes.length)) {
+    b.push('🔔 برای دیدن یادآوری‌ها در نوار اعلان گوشی <button class="chip" data-act="askNotif">اجازه اعلان بدهید</button>');
+  }
+  if (D.settings.guard && !Sound.guardOn) {
+    b.push('🌙 حالت شب قطع شده است و زنگ صبح ممکن است پخش نشود. <button class="chip" data-act="night">روشن کردن دوباره</button>');
+  }
+  $('#banners').innerHTML = b.map(x => `<div class="banner">${x}</div>`).join('');
+}
+ACT.askNotif = async () => {
+  try { await Notification.requestPermission(); } catch (_) {}
+  render();
+};
+
+// ================= تب «بیشتر» =================
+const LOGO = s => `<svg width="${s}" height="${s}" viewBox="0 0 512 512" aria-hidden="true">
+  <rect width="512" height="512" rx="110" fill="#0d3b66"/>
+  <path d="M0 420 150 250 260 360 360 230 512 410V512H0Z" fill="#1a5a8f"/>
+  <path d="M0 470 120 400 250 450 400 390 512 440V512H0Z" fill="#8a3f22"/>
+  <circle cx="180" cy="130" r="34" fill="#e8772e"/><circle cx="332" cy="130" r="34" fill="#e8772e"/>
+  <circle cx="256" cy="236" r="118" fill="#e8772e"/><circle cx="256" cy="236" r="96" fill="#fff"/>
+  <path d="M256 168V236L302 262" stroke="#0d3b66" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="256" cy="236" r="12" fill="#0d3b66"/></svg>`;
+
+function drawIcon(c, s) {
+  const x = c.getContext('2d');
+  x.setTransform(s / 512, 0, 0, s / 512, 0, 0);
+  x.fillStyle = '#0d3b66'; x.fillRect(0, 0, 512, 512);
+  const poly = (pts, col) => { x.fillStyle = col; x.beginPath(); pts.forEach(([a, b], i) => (i ? x.lineTo(a, b) : x.moveTo(a, b))); x.closePath(); x.fill(); };
+  const dot = (cx, cy, r, col) => { x.fillStyle = col; x.beginPath(); x.arc(cx, cy, r, 0, 7); x.fill(); };
+  poly([[0, 420], [150, 250], [260, 360], [360, 230], [512, 410], [512, 512], [0, 512]], '#1a5a8f');
+  poly([[0, 470], [120, 400], [250, 450], [400, 390], [512, 440], [512, 512], [0, 512]], '#8a3f22');
+  dot(180, 130, 34, '#e8772e'); dot(332, 130, 34, '#e8772e');
+  dot(256, 236, 118, '#e8772e'); dot(256, 236, 96, '#fff');
+  x.strokeStyle = '#0d3b66'; x.lineWidth = 16; x.lineCap = 'round'; x.lineJoin = 'round';
+  x.beginPath(); x.moveTo(256, 168); x.lineTo(256, 236); x.lineTo(302, 262); x.stroke();
+  dot(256, 236, 12, '#0d3b66');
+}
+
+function renderMore(v) {
+  const s = D.settings, perm = 'Notification' in window ? Notification.permission : 'none';
+  const permTxt = { granted: '✅ فعال', denied: '⛔ مسدود؛ از تنظیمات Chrome فعال کنید', default: 'هنوز اجازه داده نشده', none: 'پشتیبانی نمی‌شود' }[perm];
+  v.innerHTML = `
+    ${INSTALL ? `<div class="card hero"><div class="row"><div class="grow"><b>نصب یادآور چادرملو روی گوشی</b>
+      <div class="sub">با آیکون اختصاصی و اجرای بدون اینترنت</div></div><button class="btn" data-act="install">📲 نصب</button></div></div>` : ''}
+    <div class="card"><h4>وضعیت برنامه</h4>
+      <div class="tg"><span>اعلان‌ها</span><span class="sub">${permTxt}</span></div>
+      ${perm === 'default' ? '<button class="btn w mt" data-act="askNotif">🔔 اجازه نمایش اعلان</button>' : ''}
+      <div class="tg"><span>نوع اجرا</span><span class="sub">${MODE}</span></div>
+      <div class="tg"><span>حافظه</span><span class="sub" id="stInfo">…</span></div>
+      <button class="btn ghost w mt" data-act="testRing">🔔 زنگ آزمایشی (۱۵ ثانیه دیگر)</button></div>
+    <div class="card"><h4>تنظیمات</h4>
+      <label class="tg"><span>خلاصه روزانه کارهای انجام‌نشده</span>
+        <span class="sw"><input type="checkbox" data-chg="digestOn" ${s.digest ? 'checked' : ''}><span></span></span></label>
+      <div class="tg"><span>ساعت خلاصه روزانه</span>
+        <input type="time" dir="ltr" data-chg="digestTime" value="${two(s.dH)}:${two(s.dM)}" style="width:auto"></div>
+      <div class="f"><label class="l">معما برای خاموش کردن زنگ یادداشت‌ها</label><div class="seg">${[[-1, 'بدون معما'], [0, 'آسان'], [1, 'متوسط'], [2, 'سخت']]
+        .map(([x, t]) => `<button type="button" data-act="pzNote" data-v="${x}" class="${s.pzNote === x ? 'on' : ''}">${t}</button>`).join('')}</div></div></div>
+    <div class="card"><h4>پشتیبان‌گیری</h4>
+      <div class="sub">همه هشدارها و یادداشت‌ها با عکس، ویدیو و صدا در یک فایل در پوشه Download گوشی ذخیره می‌شوند. بعد از تعویض گوشی یا پاک شدن مرورگر، با «بازیابی» برمی‌گردند.</div>
+      <div class="btns"><button class="btn" data-act="backup">💾 پشتیبان‌گیری</button><button class="btn ghost" data-act="restore">♻️ بازیابی</button></div></div>
+    <div class="card"><h4>آیکون برنامه (برای نصب PWA)</h4>
+      <div class="sub">دو فایل icon-192.png و icon-512.png ساخته می‌شود؛ آن‌ها را کنار index.html در گیت‌هاب آپلود کنید.</div>
+      <div class="row mt"><canvas id="icoPrev" width="72" height="72" style="border-radius:16px;flex:none"></canvas>
+        <button class="btn grow" data-act="icons">🎨 ساخت آیکون‌های برنامه</button></div></div>
+    <div class="card about">${LOGO(64)}<b>یادآور چادرملو</b>
+      <div class="sub">هشدار بیدارباش و یادآوری کارهای انجام‌نشده</div>
+      <div>مجتمع معدنی و صنعتی چادرملو</div><div class="sub">استان یزد</div>
+      <div class="by"><b>طراحی و توسعه: یاسین مظفری</b></div>
+      <div class="sub">نسخه ${fa('1.0')}</div></div>`;
+  drawIcon($('#icoPrev'), 72);
+  storageInfo();
+}
+
+async function storageInfo() {
+  const el = $('#stInfo');
+  if (!el) return;
+  let t = STORE_OK ? 'داخل گوشی' : 'در دسترس نیست';
+  try {
+    const e = await navigator.storage.estimate();
+    t = sizeText(e.usage || 0) + ' استفاده‌شده';
+    if (await navigator.storage.persisted()) t += ' · ماندگار ✅';
+  } catch (_) {}
+  el.textContent = t;
+}
+
+CHG.digestOn = el => { D.settings.digest = el.checked; save(); syncPeriodic(); };
+CHG.digestTime = el => {
+  const [h, m] = (el.value || '').split(':').map(Number);
+  if (isNaN(h) || isNaN(m)) return;
+  D.settings.dH = h; D.settings.dM = m;
+  save();
+  toast('خلاصه روزانه ساعت ' + hmOf(h, m) + ' نمایش داده می‌شود');
+};
+ACT.pzNote = el => { D.settings.pzNote = +el.dataset.v; save(); render(); };
+
+ACT.testRing = async () => {
+  D.alarms = D.alarms.filter(a => !a.test);
+  const t = Date.now() + 15000, d = new Date(t);
+  D.alarms.push({
+    id: newId(), test: true, h: d.getHours(), m: d.getMinutes(), label: 'زنگ آزمایشی', days: 0, on: true,
+    vib: true, tone: 'mine', snooze: 0, level: 0, count: 1, grad: false, skipHol: false, nx: t, sn: 0
+  });
+  await save();
+  toast('زنگ آزمایشی ۱۵ ثانیه دیگر پخش می‌شود. می‌توانید صفحه را قفل کنید', 5000);
+};
+
+ACT.backup = async () => {
+  toast('در حال آماده‌سازی پشتیبان…');
+  try { const n = await backup(); toast('پشتیبان در پوشه Download ذخیره شد (' + n + ' فایل)', 5000); }
+  catch (e) { toast('پشتیبان‌گیری انجام نشد؛ شاید حافظه گوشی کم است'); }
+};
+ACT.restore = () => $('#restoreIn').click();
+$('#restoreIn').onchange = async e => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  if (!f || !confirm('اطلاعات فعلی با فایل پشتیبان جایگزین شود؟')) return;
+  try { toast('در حال بازیابی…'); await restore(f); render(); toast('بازیابی انجام شد ✓'); }
+  catch (err) { toast(err instanceof SyntaxError ? 'فایل پشتیبان معتبر نیست' : 'بازیابی نشد: ' + err.message, 5000); }
+};
+
+ACT.icons = () => {
+  [192, 512].forEach((s, i) => setTimeout(() => {
+    const c = document.createElement('canvas');
+    c.width = c.height = s;
+    drawIcon(c, s);
+    c.toBlob(b => download(b, `icon-${s}.png`), 'image/png');
+  }, i * 900));
+  toast('icon-192.png و icon-512.png در پوشه Download ذخیره می‌شوند', 5000);
+};
+
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); INSTALL = e; if (UI.tab === 'more') render(); });
+addEventListener('appinstalled', () => { INSTALL = null; toast('برنامه روی گوشی نصب شد ✓'); render(); });
+ACT.install = async () => {
+  if (!INSTALL) return;
+  INSTALL.prompt();
+  try { await INSTALL.userChoice; } catch (_) {}
+  INSTALL = null;
+  render();
+};
+
+// ================= PWA =================
+async function setupPWA() {
+  if (!WEB) return;
+  if (!$('link[rel="manifest"]')) document.head.insertAdjacentHTML('beforeend', '<link rel="manifest" href="manifest.json">');
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'notif') handleNotif(e.data); });
+  try {
+    REG = await navigator.serviceWorker.register('sw.js');
+    REG = await navigator.serviceWorker.ready;
+  } catch (e) { REG = null; }
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  syncPeriodic();
+}
+
+async function syncPeriodic() {
+  try {
+    if (!REG || !('periodicSync' in REG)) return;
+    if (!D.settings.digest) return await REG.periodicSync.unregister('digest');
+    const st = await navigator.permissions.query({ name: 'periodic-background-sync' });
+    if (st.state === 'granted') await REG.periodicSync.register('digest', { minInterval: 12 * HOUR });
+  } catch (_) {}
+}
+
+async function importShare() {
+  if (!('caches' in window)) return;
+  const cache = await caches.open('yadavar-share');
+  const r = await cache.match(new URL('__share/meta', location.href).href);
+  if (!r) return;
+  let last = 0;
+  for (const it of await r.json()) {
+    const atts = [];
+    for (const f of it.files || []) {
+      const res = await cache.match(f.key);
+      if (!res) continue;
+      const b = await res.blob(), type = (f.type || b.type || '').split('/')[0];
+      if (!['image', 'video', 'audio'].includes(type)) continue;
+      atts.push({ type, key: await putFile(b), name: f.name || type, size: b.size });
+    }
+    if (!atts.length && !it.title && !it.text) continue;
+    const n = { id: newId(), title: String(it.title || '').slice(0, 100), text: it.text || '', created: Date.now(),
+      at: null, ring: true, done: false, pri: 1, atts };
+    D.notes.push(n);
+    last = n.id;
+  }
+  await caches.delete('yadavar-share');
+  if (last) {
+    await save();
+    UI.tab = 'notes';
+    render();
+    editNote(last);
+    toast('فایل‌ها به یادداشت جدید اضافه شد؛ زمان یادآوری را تعیین کنید', 5000);
+  }
+}
+
+async function handleURL() {
+  const p = new URLSearchParams(location.search);
+  if (!location.search) return;
+  history.replaceState(null, '', location.pathname);
+  if (p.get('share')) await importShare();
+  if (p.get('notif')) await handleNotif({ kind: p.get('notif'), id: p.get('id'), action: p.get('action') || 'open' });
+  if (p.get('new') === 'alarm') { UI.tab = 'alarms'; render(); editAlarm(); }
+  if (p.get('new') === 'note') { UI.tab = 'notes'; render(); editNote(); }
+}
+
+// ================= شروع برنامه =================
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible') return;
+  tick(); uiTick(); banners();
+});
+
+(async () => {
+  await load();
+  render();
+  uiTick();
+  setupPWA();
+  await handleURL();
+  cleanFiles();
+  tick();
+  setInterval(() => { tick(); uiTick(); }, 1000);
+})();
+</script>
+</body>
+</html>
